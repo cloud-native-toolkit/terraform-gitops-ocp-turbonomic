@@ -22,7 +22,7 @@ metadata:
     app.kubernetes.io/instance: t8c-operator
     app.kubernetes.io/managed-by: operator-life
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   replicas: 1
   selector:

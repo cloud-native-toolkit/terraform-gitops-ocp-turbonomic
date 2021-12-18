@@ -5,6 +5,7 @@ metadata:
   name: xls.charts.helm.k8s.io
   annotations:
     "api-approved.kubernetes.io": "https://github.com/operator-framework/operator-sdk/pull/2703"
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   group: charts.helm.k8s.io
   names:
