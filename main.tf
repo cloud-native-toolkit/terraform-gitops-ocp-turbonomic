@@ -7,7 +7,7 @@ locals {
   //service_url   = "http://${local.name}.${var.namespace}"
   //values_content = {
   //}
-  layer = "applications"
+  layer = "services"
   application_branch = "main"
   layer_config = var.gitops_config[local.layer]
 }
@@ -19,17 +19,6 @@ module setup_clis {
 resource null_resource deployOperator {
   provisioner "local-exec" {
     command = "${path.module}/scripts/deployOp.sh '${local.yaml_dir}' '${var.service_account_name}'"
-
-    environment = {
-      BIN_DIR = local.bin_dir
-    }
-  }
-} 
-
-resource null_resource debugprintop {
-  depends_on = [null_resource.deployOperator]
-  provisioner "local-exec" {
-    command = "cat ${local.yaml_dir}/operator.yaml"
 
     environment = {
       BIN_DIR = local.bin_dir

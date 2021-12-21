@@ -9,7 +9,7 @@ SANAME="$2"
 mkdir -p "${DEST_DIR}"
 echo "adding xl chart..."
 #add chart to deployment directory
-##cp "${CHART_DIR}/charts.helm.k8s.io_xls.yaml" "${DEST_DIR}/xl.yaml"
+cp "${CHART_DIR}/charts.helm.k8s.io_xls.yaml" "${DEST_DIR}/xl.yaml"
 
 #create operator
 cat > "${DEST_DIR}/operator.yaml" << EOL
