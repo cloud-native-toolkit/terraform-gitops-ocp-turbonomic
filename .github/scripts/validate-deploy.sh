@@ -52,8 +52,10 @@ else
 fi
 
 
-### add more validation logic when done ####
-#kubectl rollout status "deployment/${DEPLOYMENT}" -n "${NAMESPACE}" || exit 1
+### validation logic checks ####
+
+#wait for deployment
+sleep 8m
 
 count=0
 until kubectl rollout status deployment/t8c-operator -n "${NAMESPACE}" || [[ $count -eq 20 ]]; do
