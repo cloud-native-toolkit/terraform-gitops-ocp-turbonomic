@@ -58,13 +58,13 @@ fi
 sleep 8m
 
 count=0
-until kubectl rollout status deployment/t8c-operator -n "${NAMESPACE}" || [[ $count -eq 20 ]]; do
+until kubectl rollout status deployment/t8c-operator -n "${NAMESPACE}" || [[ $count -eq 4 ]]; do
   echo "Waiting for turbo operator rollout to deploy"
   count=$((count + 1))
   sleep 15
 done
 
-if [[ $count -eq 20 ]]; then
+if [[ $count -eq 4 ]]; then
   echo "Timed out waiting for turbo operator to deploy"
   exit 1
 fi
