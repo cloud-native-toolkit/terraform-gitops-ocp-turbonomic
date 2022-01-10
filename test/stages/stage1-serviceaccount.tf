@@ -5,6 +5,7 @@ module "gitops_service_account" {
   git_credentials = module.gitops.git_credentials
   namespace = module.gitops_turbo_namespace.name
   name = "t8c-operator"
+  pull_secrets = ["dockerpull"]
   rbac_rules = [{
     apiGroups = [""]
     resources = ["configmaps","endpoints","events","persistentvolumeclaims","pods","secrets","serviceaccounts","services"]
