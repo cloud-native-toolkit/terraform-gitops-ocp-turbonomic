@@ -16,7 +16,7 @@ apiVersion: charts.helm.k8s.io/v1
 kind: Xl
 metadata:
   name: xl-release
-    annotations:
+  annotations:
     argocd.argoproj.io/sync-wave: "3"
 spec:
   global:
