@@ -1,13 +1,12 @@
 name: gitops-ocp-turbonomic
 type: terraform
-description: ""
+description: Module to install Turbonomic via Gitops
 tags:
   - tools
   - gitops
 versions:
   - platforms:
       - kubernetes
-      - ocp3
       - ocp4
     dependencies:
       - id: gitops
@@ -25,6 +24,30 @@ versions:
       - id: namespace
         refs:
           - source: github.com/cloud-native-toolkit/terraform-gitops-namespace.git
+            version: ">= 1.0.0"
+      - id: argocd-bootstrap
+        refs:
+          - source: github.com/cloud-native-toolkit/terraform-tools-argocd-bootstrap.git
+            version: ">= 1.0.0"
+      - id: cert
+        refs:
+          - source: github.com/cloud-native-toolkit/terraform-util-sealed-secret-cert.git
+            version: ">= 1.0.0"
+      - id: olm
+        refs:
+          - source: github.com/ibm-garage-cloud/terraform-software-olm.git
+            version: ">= 1.0.0"
+      - id: resource-group
+        refs:
+          - source: github.com/cloud-native-toolkit/terraform-ibm-resource-group.git
+            version: ">= 1.0.0"
+      - id: service-account
+        refs:
+          - source: github.com/cloud-native-toolkit/terraform-gitops-service-account.git
+            version: ">= 1.0.0"
+      - id: storageclass
+        refs:
+          - source: github.com/cloud-native-toolkit/terraform-gitops-ocp-storageclass.git
             version: ">= 1.0.0"
     variables:
       - name: gitops_config
@@ -59,3 +82,11 @@ versions:
         moduleRef:
           id: gitops
           output: sealed_secrets_cert
+      - name: storage_class_name
+        moduleRef:
+          id: storageclass
+          output: storage_name
+      - name: service_account_name
+        moduleRef:
+          id: service-account
+          output: name
