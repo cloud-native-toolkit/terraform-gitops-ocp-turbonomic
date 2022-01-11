@@ -35,7 +35,7 @@ until kubectl get namespace "${NAMESPACE}" 1> /dev/null 2> /dev/null || [[ $coun
   sleep 15
 done
 
-if [[ $count -eq 20 ]]; then
+if [[ $count -eq 30 ]]; then
   echo "Timed out waiting for namespace: ${NAMESPACE}"
   exit 1
 else
