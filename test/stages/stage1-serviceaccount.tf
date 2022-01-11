@@ -1,5 +1,5 @@
 module "gitops_service_account" {
-  source = "github.com/cloud-native-toolkit/terraform-gitops-service-account.git"
+  source = "github.com/tcskill/terraform-gitops-service-account.git?ref=addCR"
 
   gitops_config = module.gitops.gitops_config
   git_credentials = module.gitops.git_credentials
@@ -67,4 +67,5 @@ module "gitops_service_account" {
   ]
   sccs = ["anyuid","privileged"]
   server_name = module.gitops.server_name
+  cluster_scope = true
 }
