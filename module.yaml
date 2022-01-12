@@ -44,7 +44,7 @@ versions:
       - id: service-account
         refs:
           - source: github.com/cloud-native-toolkit/terraform-gitops-service-account.git
-            version: ">= 1.5.0"
+            version: ">= 1.6.0"
       - id: storageclass
         refs:
           - source: github.com/cloud-native-toolkit/terraform-gitops-ocp-storageclass.git

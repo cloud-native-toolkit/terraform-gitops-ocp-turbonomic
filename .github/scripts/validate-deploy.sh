@@ -29,7 +29,7 @@ echo "Printing argocd/${LAYER}/cluster/${SERVER_NAME}/${TYPE}/${NAMESPACE}-${COM
 cat "argocd/${LAYER}/cluster/${SERVER_NAME}/${TYPE}/${NAMESPACE}-${COMPONENT_NAME}.yaml"
 
 count=0
-until kubectl get namespace "${NAMESPACE}" 1> /dev/null 2> /dev/null || [[ $count -eq 20 ]]; do
+until kubectl get namespace "${NAMESPACE}" 1> /dev/null 2> /dev/null || [[ $count -eq 30 ]]; do
   echo "Waiting for namespace: ${NAMESPACE}"
   count=$((count + 1))
   sleep 15
@@ -49,13 +49,13 @@ fi
 sleep 8m
 
 count=0
-until kubectl rollout status deployment/t8c-operator -n "${NAMESPACE}" || [[ $count -eq 4 ]]; do
+until kubectl rollout status deployment/t8c-operator -n "${NAMESPACE}" || [[ $count -eq 5 ]]; do
   echo "Waiting for turbo operator rollout to deploy"
   count=$((count + 1))
   sleep 15
 done
 
-if [[ $count -eq 4 ]]; then
+if [[ $count -eq 5 ]]; then
   echo "Timed out waiting for turbo operator to deploy"
   exit 1
 fi
