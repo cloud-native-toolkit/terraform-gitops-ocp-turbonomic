@@ -6,4 +6,5 @@ module "gitops_turbo" {
   server_name = module.gitops.server_name
   namespace = module.gitops_turbo_namespace.name
   storage_class_name = module.gitops_storageclass.storage_name
+  pullsecret_name = "dockerpull"
 }

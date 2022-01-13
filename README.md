@@ -3,6 +3,8 @@
 
 Deploys Turbonomic operator into the cluster and creates an instance. By default, the kubeturbo probe is also installed into the cluster along with the OpenShift ingress.  Other probes to deploy can be specified in the probes variable, by default it will deploy:  turboprobe, openshift ingress, and instana.  The namespace to deploy within the cluster is defined in the variables, default is Turbonomic.  Also note if deploying on mzr cluster you'll need the custom storage created, default is true to create this automatically, if not mzr you can set to false and use another storage class you'd like.
 
+If the operator is unable to pull the image due to a docker rate limit error from your cluster, then set a docker pull secret and pass the name of the pull secret in the `pullsecret_name` variable.
+
 ### Supported Component Selector Probe Types 
 Use these names in the `probes` variable to define additional probes as needed for your environment:
 ```
@@ -15,11 +17,6 @@ Use these names in the `probes` variable to define additional probes as needed f
 ## Module dependencies
 
 The module uses the following elements
-
-### Terraform providers
-
-- helm - used to configure the scc for OpenShift
-- null - used to run the shell scripts
 
 ### Environment
 

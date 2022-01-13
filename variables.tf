@@ -90,3 +90,9 @@ variable "namespace" {
   description = "Name of the existing namespace where turbo will be deployed."
   default     = "turbonomic"
 }
+
+variable "pullsecret_name" {
+  type        = string
+  description = "Name of the docker pull secret if needed - only needed if hitting docker rate limit"
+  default     = ""
+}

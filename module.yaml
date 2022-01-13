@@ -18,6 +18,7 @@ versions:
           - source: github.com/cloud-native-toolkit/terraform-gitops-namespace.git
             version: ">= 1.10.0"
       - id: storageclass
+        optional: true
         refs:
           - source: github.com/cloud-native-toolkit/terraform-gitops-ocp-storageclass.git
             version: ">= 1.2.0"

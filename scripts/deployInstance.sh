@@ -1,13 +1,9 @@
 #!/usr/bin/env bash
 
-#SCRIPT_DIR=$(cd $(dirname "$0"); pwd -P)
-#CHART_DIR=$(cd "${SCRIPT_DIR}/../charts"; pwd -P)
-
 DEST_DIR="$1"
 mkdir -p "${DEST_DIR}"
 
 SANAME="$2"
-#NAMESPACE="$3"
 PROBES="$3"
 STOR_NAME="$4"
 
