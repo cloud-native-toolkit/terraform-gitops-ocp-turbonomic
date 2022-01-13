@@ -19,7 +19,7 @@ module "service_account" {
   git_credentials = var.git_credentials
   namespace = var.namespace
   name = "t8c-operator"
-  pull_secrets = var.pullsecret_name != null && var.pullsecret_name != "" ? var.pullsecret_name : []
+  pull_secrets = var.pullsecret_name != null && var.pullsecret_name != "" ? [var.pullsecret_name] : []
   rbac_rules = [{
     apiGroups = [""]
     resources = ["configmaps","endpoints","events","persistentvolumeclaims","pods","secrets","serviceaccounts","services"]
