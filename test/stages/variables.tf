@@ -10,9 +10,18 @@ variable "ibmcloud_api_key" {
   description = "The api key for IBM Cloud access"
 }
 
-variable "region" {
+variable "server_url" {
   type        = string
-  description = "Region for VLANs defined in private_vlan_number and public_vlan_number."
+}
+
+variable "bootstrap_prefix" {
+  type = string
+  default = ""
+}
+
+variable "namespace" {
+  type        = string
+  description = "Namespace for tools"
 }
 
 variable "cluster_name" {
@@ -63,7 +72,7 @@ variable "git_org" {
 }
 
 variable "git_repo" {
-  default = "git-module-turbo"
+  default = "git-module-test"
 }
 
 variable "gitops_namespace" {
@@ -72,4 +81,3 @@ variable "gitops_namespace" {
 
 variable "git_username" {
 }
-

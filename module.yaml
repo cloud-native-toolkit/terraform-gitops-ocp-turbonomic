@@ -13,38 +13,10 @@ versions:
         refs:
           - source: github.com/cloud-native-toolkit/terraform-tools-gitops.git
             version: ">= 1.1.0"
-      - id: cluster
-        refs:
-          - source: github.com/ibm-garage-cloud/terraform-ibm-container-platform
-            version: ">= 1.7.0"
-          - source: github.com/ibm-garage-cloud/terraform-ibm-ocp-vpc
-            version: ">= 1.0.0"
-          - source: github.com/ibm-garage-cloud/terraform-k8s-ocp-cluster
-            version: ">= 2.0.0"
       - id: namespace
         refs:
           - source: github.com/cloud-native-toolkit/terraform-gitops-namespace.git
             version: ">= 1.10.0"
-      - id: argocd-bootstrap
-        refs:
-          - source: github.com/cloud-native-toolkit/terraform-tools-argocd-bootstrap.git
-            version: ">= 1.5.1"
-      - id: cert
-        refs:
-          - source: github.com/cloud-native-toolkit/terraform-util-sealed-secret-cert.git
-            version: ">= 1.0.0"
-      - id: olm
-        refs:
-          - source: github.com/ibm-garage-cloud/terraform-software-olm.git
-            version: ">= 1.3.2"
-      - id: resource-group
-        refs:
-          - source: github.com/cloud-native-toolkit/terraform-ibm-resource-group.git
-            version: ">= 3.0.1"
-      - id: service-account
-        refs:
-          - source: github.com/cloud-native-toolkit/terraform-gitops-service-account.git
-            version: ">= 1.6.0"
       - id: storageclass
         refs:
           - source: github.com/cloud-native-toolkit/terraform-gitops-ocp-storageclass.git
@@ -62,18 +34,6 @@ versions:
         moduleRef:
           id: gitops
           output: server_name
-      - name: cluster_type
-        moduleRef:
-          id: cluster
-          output: platform.type_code
-      - name: cluster_ingress_hostname
-        moduleRef:
-          id: cluster
-          output: platform.ingress
-      - name: tls_secret_name
-        moduleRef:
-          id: cluster
-          output: platform.tls_secret
       - name: namespace
         moduleRef:
           id: namespace
@@ -86,7 +46,3 @@ versions:
         moduleRef:
           id: storageclass
           output: storage_name
-      - name: service_account_name
-        moduleRef:
-          id: service-account
-          output: name

@@ -32,12 +32,7 @@ namespace to be created. The following companion
 modules can help provide the required information:
 
 - Gitops - github.com/cloud-native-toolkit/terraform-tools-gitops
-- Cluster - github.com/ibm-garage-cloud/terraform-cluster-ibmcloud
 - Namespace - github.com/ibm-garage-cloud/terraform-cluster-namespace
-- ArgoBootstrap - github.com/cloud-native-toolkit/terraform-tools-argocd-bootstrap
-- SealedCert - github.com/cloud-native-toolkit/terraform-util-sealed-secret-cert
-- ResourceGroup - github.com/cloud-native-toolkit/terraform-ibm-resource-group
-- ServiceAccount - github.com/cloud-native-toolkit/terraform-gitops-service-account
 - StorageClass - github.com/cloud-native-toolkit/terraform-gitops-ocp-storageclass
 
 
@@ -52,7 +47,5 @@ module "turbonomic" {
   server_name = module.gitops.server_name
   namespace = module.gitops_turbo_namespace.name
   storage_class_name = module.gitops_storageclass.storage_name
-  service_account_name = module.gitops_service_account.name
-
 }
 ```

@@ -12,11 +12,81 @@ module setup_clis {
   source = "github.com/cloud-native-toolkit/terraform-util-clis.git"
 }
 
+module "service_account" {
+  source = "github.com/cloud-native-toolkit/terraform-gitops-service-account"
+
+  gitops_config = var.gitops_config
+  git_credentials = var.git_credentials
+  namespace = var.namespace
+  name = "t8c-operator"
+  pull_secrets = ["dockerpull"]
+  rbac_rules = [{
+    apiGroups = [""]
+    resources = ["configmaps","endpoints","events","persistentvolumeclaims","pods","secrets","serviceaccounts","services"]
+    verbs = ["*"]
+  },{
+    apiGroups = ["apps"]
+    resources = ["daemonsets","deployments","statefulsets","replicasets"]
+    verbs = ["*"]
+  },{
+    apiGroups = ["apps"]
+    resources = ["deployments/finalizers"]
+    verbs = ["update"]
+  },{
+    apiGroups = ["extensions"]
+    resources = ["deployments"]
+    verbs = ["*"]
+  },{
+    apiGroups = [""]
+    resources = ["namespaces"]
+    verbs = ["get"]
+  },{
+    apiGroups = ["policy"]
+    resources = ["podsecuritypolicies","poddisruptionbudgets"]
+    verbs = ["*"]
+  },{
+    apiGroups = ["rbac.authorization.k8s.io"]
+    resources = ["clusterrolebindings","clusterroles","rolebindings","roles"]
+    verbs = ["*"]
+  },{
+    apiGroups = ["batch"]
+    resources = ["jobs"]
+    verbs = ["*"]
+  },{
+    apiGroups = ["monitoring.coreos.com"]
+    resources = ["servicemonitors"]
+    verbs = ["get","create"]
+  },{
+    apiGroups = ["charts.helm.k8s.io"]
+    resources = ["*"]
+    verbs = ["*"]
+  },{
+    apiGroups = ["networking.istio.io"]
+    resources = ["gateways","virtualservices"]
+    verbs = ["*"]
+  },{
+    apiGroups = ["cert-manager.io"]
+    resources = ["certificates"]
+    verbs = ["*"]
+  },{
+    apiGroups = ["route.openshift.io"]
+    resources = ["routes","routes/custom-host"]
+    verbs = ["*"]
+  },{
+    apiGroups = ["security.openshift.io"]
+    resourceNames = ["turbonomic-t8c-operator-anyuid"]
+    resources = ["securitycontextconstraints"]
+    verbs = ["use"]
+  }
+  ]
+  sccs = ["anyuid","privileged"]
+  server_name = var.server_name
+  rbac_cluster_scope = true
+}
+
 resource null_resource deploy_operator {
-
-
   provisioner "local-exec" {
-    command = "${path.module}/scripts/deployOp.sh '${local.yaml_dir}' '${var.service_account_name}'"
+    command = "${path.module}/scripts/deployOp.sh '${local.yaml_dir}' '${module.service_account.name}'"
     
     environment = {
       BIN_DIR = local.bin_dir
@@ -31,7 +101,7 @@ resource "null_resource" "deploy_instance" {
   }
 
   provisioner "local-exec" {
-    command = "${path.module}/scripts/deployInstance.sh '${local.yaml_dir}' '${var.service_account_name}' '${self.triggers.probes}' ${var.storage_class_name}"
+    command = "${path.module}/scripts/deployInstance.sh '${local.yaml_dir}' '${module.service_account.name}' '${self.triggers.probes}' ${var.storage_class_name}"
 
     environment = {
       BIN_DIR = local.bin_dir
