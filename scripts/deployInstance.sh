@@ -6,6 +6,8 @@ mkdir -p "${DEST_DIR}"
 SANAME="$2"
 PROBES="$3"
 STOR_NAME="$4"
+REPO="$5"
+PULL_NAME="$6"
 
 cat > "${DEST_DIR}/xl-release.yaml" << EOL
 apiVersion: charts.helm.k8s.io/v1
@@ -21,9 +23,16 @@ spec:
     externalArangoDBName: arango.turbo.svc.cluster.local
     storageClassName: ${STOR_NAME}
     serviceAccountName:  ${SANAME}
-
 EOL
+    if [[ "${REPO}" == "docker" ]]; then
+      echo "pulling from docker..."
+      cat >> ${DEST_DIR}/xl-release.yaml << EOL
 
+    registry: index.docker.io
+    imagePullSecret: ${PULL_NAME}
+EOL
+    fi
+    
 
     if [[ "${PROBES}" =~ kubeturbo ]]; then
       echo "adding kubeturbo probe..."

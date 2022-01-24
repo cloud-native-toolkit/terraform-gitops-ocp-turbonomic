@@ -96,3 +96,9 @@ variable "pullsecret_name" {
   description = "Name of the docker pull secret if needed - only needed if hitting docker rate limit"
   default     = ""
 }
+
+variable "repo_type" {
+  type        = string
+  description = "Pull Turbonomic images from RedHat Marketplace with value 'redhat' or docker with 'docker'"
+  default     = "redhat"
+}

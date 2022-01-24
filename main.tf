@@ -86,7 +86,7 @@ module "service_account" {
 
 resource null_resource deploy_operator {
   provisioner "local-exec" {
-    command = "${path.module}/scripts/deployOp.sh '${local.yaml_dir}' '${module.service_account.name}'"
+    command = "${path.module}/scripts/deployOp.sh '${local.yaml_dir}' '${module.service_account.name}' ${var.repo_type}"
     
     environment = {
       BIN_DIR = local.bin_dir
@@ -101,7 +101,7 @@ resource "null_resource" "deploy_instance" {
   }
 
   provisioner "local-exec" {
-    command = "${path.module}/scripts/deployInstance.sh '${local.yaml_dir}' '${module.service_account.name}' '${self.triggers.probes}' ${var.storage_class_name}"
+    command = "${path.module}/scripts/deployInstance.sh '${local.yaml_dir}' '${module.service_account.name}' '${self.triggers.probes}' ${var.storage_class_name} ${var.repo_type} ${var.pullsecret_name}"
 
     environment = {
       BIN_DIR = local.bin_dir

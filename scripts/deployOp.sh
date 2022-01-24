@@ -5,6 +5,11 @@ CHART_DIR=$(cd "${SCRIPT_DIR}/../charts"; pwd -P)
 
 DEST_DIR="$1"
 SANAME="$2"
+REPO="$3"
+
+    if [[ "${REPO}" == "docker" ]]; then
+      IMAGE="index.docker.io/turbonomic"
+    else IMAGE="turbonomic"
 
 mkdir -p "${DEST_DIR}"
 echo "adding xl chart..."
@@ -36,7 +41,7 @@ spec:
       serviceAccountName: ${SANAME}
       containers:
       - name: t8c-operator
-        image: turbonomic/t8c-operator:42.0
+        image: ${IMAGE}/t8c-operator:42.0
         imagePullPolicy: Always
         env:
         - name: WATCH_NAMESPACE
