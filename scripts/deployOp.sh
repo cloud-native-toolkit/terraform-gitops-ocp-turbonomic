@@ -36,7 +36,7 @@ spec:
       serviceAccountName: ${SANAME}
       containers:
       - name: t8c-operator
-        image: turbonomic/t8c-operator:42.0
+        image: docker.io/turbonomic/t8c-operator:42.0
         imagePullPolicy: Always
         env:
         - name: WATCH_NAMESPACE
