@@ -21,9 +21,12 @@ spec:
     externalArangoDBName: arango.turbo.svc.cluster.local
     storageClassName: ${STOR_NAME}
     serviceAccountName:  ${SANAME}
-    securityContext:
-      fsGroup: 2000
+    ui:
+      serviceAccountName:  ${SANAME}
 
+  nginxingress:
+    enabled:  false
+       
 EOL
 
 
