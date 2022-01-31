@@ -17,7 +17,7 @@ metadata:
 spec:
   global:
     repository: turbonomic
-    tag: 8.3.4
+    tag: 8.4.1
     externalArangoDBName: arango.turbo.svc.cluster.local
     storageClassName: ${STOR_NAME}
     serviceAccountName:  ${SANAME}
