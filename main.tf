@@ -74,12 +74,12 @@ module "service_account" {
     verbs = ["*"]
   },{
     apiGroups = ["security.openshift.io"]
-    resourceNames = ["turbonomic-t8c-operator-anyuid"]
+    resourceNames = ["turbonomic-t8c-operator-privileged"]
     resources = ["securitycontextconstraints"]
     verbs = ["use"]
   }
   ]
-  sccs = ["anyuid","privileged"]
+  sccs = ["privileged"]
   server_name = var.server_name
   rbac_cluster_scope = true
 }

@@ -24,9 +24,6 @@ spec:
     ui:
       serviceAccountName:  ${SANAME}
 
-  nginxingress:
-    enabled:  false
-       
 EOL
 
 
