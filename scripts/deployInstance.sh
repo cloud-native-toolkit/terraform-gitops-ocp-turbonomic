@@ -21,8 +21,8 @@ spec:
     externalArangoDBName: arango.turbo.svc.cluster.local
     storageClassName: ${STOR_NAME}
     serviceAccountName:  ${SANAME}
-    ui:
-      serviceAccountName:  ${SANAME}
+  ui:
+    serviceAccountName:  ${SANAME}
 
 EOL
 
