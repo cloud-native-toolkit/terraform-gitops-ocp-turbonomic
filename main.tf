@@ -2,6 +2,7 @@ locals {
   name          = "turbo"
   bin_dir       = module.setup_clis.bin_dir
   yaml_dir      = "${path.cwd}/.tmp/${local.name}/chart/${local.name}"
+  inst_dir      = "${local.yaml_dir}/instance"
 
   layer = "services"
   application_branch = "main"
@@ -92,7 +93,20 @@ resource null_resource deploy_operator {
       BIN_DIR = local.bin_dir
     }
   }
-} 
+}
+
+resource null_resource setup_gitops_operator {
+  depends_on = [null_resource.deploy_operator]
+
+  provisioner "local-exec" {
+    command = "${local.bin_dir}/igc gitops-module '${local.name}' -n '${var.namespace}' --contentDir '${local.yaml_dir}' --serverName '${var.server_name}' -l '${local.layer}' --debug"
+
+    environment = {
+      GIT_CREDENTIALS = yamlencode(nonsensitive(var.git_credentials))
+      GITOPS_CONFIG   = yamlencode(var.gitops_config)
+    }
+  }
+}
 
 resource "null_resource" "deploy_instance" {
   depends_on = [null_resource.deploy_operator]
@@ -101,7 +115,7 @@ resource "null_resource" "deploy_instance" {
   }
 
   provisioner "local-exec" {
-    command = "${path.module}/scripts/deployInstance.sh '${local.yaml_dir}' '${module.service_account.name}' '${self.triggers.probes}' ${var.storage_class_name}"
+    command = "${path.module}/scripts/deployInstance.sh '${local.inst_dir}' '${module.service_account.name}' '${self.triggers.probes}' ${var.storage_class_name}"
 
     environment = {
       BIN_DIR = local.bin_dir
@@ -109,11 +123,11 @@ resource "null_resource" "deploy_instance" {
   }
 } 
 
-resource null_resource setup_gitops {
-  depends_on = [null_resource.deploy_operator,null_resource.deploy_instance]
+resource null_resource setup_gitops_instance {
+  depends_on = [setup_gitops_operator,null_resource.deploy_instance]
 
   provisioner "local-exec" {
-    command = "${local.bin_dir}/igc gitops-module '${local.name}' -n '${var.namespace}' --contentDir '${local.yaml_dir}' --serverName '${var.server_name}' -l '${local.layer}' --debug"
+    command = "${local.bin_dir}/igc gitops-module 'turboinst' -n '${var.namespace}' --contentDir '${local.inst_dir}' --serverName '${var.server_name}' -l '${local.layer}' --debug"
 
     environment = {
       GIT_CREDENTIALS = yamlencode(nonsensitive(var.git_credentials))
