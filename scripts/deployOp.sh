@@ -22,7 +22,7 @@ metadata:
   name: t8c-certified
   namespace: ${NAMESP}
   annotations:
-    argocd.argoproj.io/sync-wave: "2"
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   name: t8c-certified
   source: certified-operators

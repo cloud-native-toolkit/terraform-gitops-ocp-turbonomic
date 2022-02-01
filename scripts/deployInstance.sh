@@ -13,7 +13,7 @@ kind: Xl
 metadata:
   name: xl-release
   annotations:
-    argocd.argoproj.io/sync-wave: "3"
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   global:
     repository: turbonomic
