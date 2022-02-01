@@ -18,7 +18,7 @@ module "service_account" {
   gitops_config = var.gitops_config
   git_credentials = var.git_credentials
   namespace = var.namespace
-  name = "t8c-operator"
+  name = "t8c-admin"
   pull_secrets = var.pullsecret_name != null && var.pullsecret_name != "" ? [var.pullsecret_name] : []
   rbac_rules = [{
     apiGroups = [""]
@@ -74,7 +74,7 @@ module "service_account" {
     verbs = ["*"]
   },{
     apiGroups = ["security.openshift.io"]
-    resourceNames = ["turbonomic-t8c-operator-anyuid","turbonomic-t8c-operator-privileged"]
+    resourceNames = ["turbonomic-t8c-admin-anyuid","turbonomic-t8c-admin-privileged"]
     resources = ["securitycontextconstraints"]
     verbs = ["use"]
   }
@@ -86,7 +86,7 @@ module "service_account" {
 
 resource null_resource deploy_operator {
   provisioner "local-exec" {
-    command = "${path.module}/scripts/deployOp.sh '${local.yaml_dir}' '${module.service_account.name}'"
+    command = "${path.module}/scripts/deployOp.sh '${local.yaml_dir}' '${module.service_account.name}' '${var.namespace}'"
     
     environment = {
       BIN_DIR = local.bin_dir
@@ -107,7 +107,7 @@ resource "null_resource" "deploy_instance" {
       BIN_DIR = local.bin_dir
     }
   }
-}
+} 
 
 resource null_resource setup_gitops {
   depends_on = [null_resource.deploy_operator,null_resource.deploy_instance]
