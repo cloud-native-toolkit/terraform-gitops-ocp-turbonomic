@@ -124,7 +124,7 @@ resource "null_resource" "deploy_instance" {
 } 
 
 resource null_resource setup_gitops_instance {
-  depends_on = [setup_gitops_operator,null_resource.deploy_instance]
+  depends_on = [null_resource.setup_gitops_operator,null_resource.deploy_instance]
 
   provisioner "local-exec" {
     command = "${local.bin_dir}/igc gitops-module 'turboinst' -n '${var.namespace}' --contentDir '${local.inst_dir}' --serverName '${var.server_name}' -l '${local.layer}' --debug"
