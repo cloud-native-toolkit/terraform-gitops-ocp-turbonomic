@@ -20,9 +20,16 @@ spec:
     tag: 8.4.4
     externalArangoDBName: arango.turbo.svc.cluster.local
     storageClassName: ${STOR_NAME}
-    serviceAccountName:  ${SANAME}
+    serviceAccountName: ${SANAME}
   ui:
-    serviceAccountName:  ${SANAME}
+    enabled: true
+    serviceAccountName: ${SANAME}
+  nginx:
+    nginxIsPrimaryIngress: false
+  nginxingress:
+    enabled: true
+  openshiftingress:
+    enabled: true
 
 EOL
 
@@ -32,15 +39,6 @@ EOL
       cat >> ${DEST_DIR}/xl-release.yaml << EOL
 
   kubeturbo:
-    enabled: true
-EOL
-    fi
-
-    if [[ "${PROBES}" =~ openshiftingress ]]; then
-      echo "adding openshiftingress probe..."
-      cat >> ${DEST_DIR}/xl-release.yaml << EOL
-  
-  openshiftingress:
     enabled: true
 EOL
     fi

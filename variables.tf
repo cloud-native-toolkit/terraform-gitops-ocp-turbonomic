@@ -77,7 +77,7 @@ variable "server_name" {
 variable "probes" {
   description = "The probes to deploy with turbonomic"
   type        = list(string)
-  default     = ["kubeturbo","instana","openshiftingress"]
+  default     = ["kubeturbo"]
 }
 
 variable "storage_class_name" {
