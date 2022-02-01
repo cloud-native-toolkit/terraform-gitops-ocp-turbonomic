@@ -19,7 +19,7 @@ module "service_account" {
   gitops_config = var.gitops_config
   git_credentials = var.git_credentials
   namespace = var.namespace
-  name = "t8c-admin"
+  name = "t8c-operator"
   pull_secrets = var.pullsecret_name != null && var.pullsecret_name != "" ? [var.pullsecret_name] : []
   rbac_rules = [{
     apiGroups = [""]
@@ -75,7 +75,7 @@ module "service_account" {
     verbs = ["*"]
   },{
     apiGroups = ["security.openshift.io"]
-    resourceNames = ["turbonomic-t8c-admin-anyuid","turbonomic-t8c-admin-privileged"]
+    resourceNames = ["turbonomic-t8c-operator-anyuid","turbonomic-t8c-operator-privileged"]
     resources = ["securitycontextconstraints"]
     verbs = ["use"]
   }

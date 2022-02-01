@@ -27,7 +27,6 @@ spec:
   name: t8c-certified
   source: certified-operators
   sourceNamespace: openshift-marketplace
-  serviceAccountName: ${SANAME}
 EOL
 
 if [[  -f "${DEST_DIR}/operator.yaml" ]]; then
