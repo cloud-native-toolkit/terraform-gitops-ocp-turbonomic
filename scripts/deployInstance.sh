@@ -26,8 +26,7 @@ spec:
     serviceAccountName: ${SANAME}
   nginx:
     nginxIsPrimaryIngress: false
-  nginxingress:
-    enabled: true
+    httpsredirect: false
   openshiftingress:
     enabled: true
 
