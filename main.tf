@@ -94,7 +94,7 @@ module setup_group_scc {
     service_account = ""
     sccs = ["anyuid"]
     server_name = var.server_name
-    group="true"
+    group=true
 }
 
 resource null_resource deploy_operator {
