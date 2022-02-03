@@ -30,3 +30,4 @@ EOL
 if [[  -f "${DEST_DIR}/operator.yaml" ]]; then
   echo "operator.yaml file found..."
 fi
+
