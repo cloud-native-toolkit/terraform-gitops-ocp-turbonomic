@@ -43,8 +43,6 @@ else
   sleep 30
 fi
 
-### validation logic checks ####
-
 #wait for deployment
 sleep 8m
 
@@ -52,7 +50,7 @@ count=0
 until kubectl rollout status deployment/t8c-operator -n "${NAMESPACE}" || [[ $count -eq 5 ]]; do
   echo "Waiting for turbo operator rollout to deploy"
   count=$((count + 1))
-  sleep 15
+  sleep 60
 done
 
 if [[ $count -eq 5 ]]; then
@@ -63,4 +61,3 @@ fi
 
 cd ..
 rm -rf .testrepo
-
