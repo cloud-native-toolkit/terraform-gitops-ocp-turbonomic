@@ -85,22 +85,8 @@ module "service_account" {
   rbac_cluster_scope = true
 }
 
-module setup_group_scc {
-  depends_on = [module.service_account]
-
-  source = "github.com/cloud-native-toolkit/terraform-gitops-sccs.git"
-
-  gitops_config = var.gitops_config
-  git_credentials = var.git_credentials
-  namespace = var.namespace
-  service_account = ""
-  sccs = ["anyuid"]
-  server_name = var.server_name
-  group = true
-}
-
 resource null_resource deploy_operator {
-  depends_on = [module.setup_group_scc]
+  depends_on = [module.service_account]
 
   provisioner "local-exec" {
     command = "${path.module}/scripts/deployOp.sh '${local.yaml_dir}' '${module.service_account.name}' '${var.namespace}'"
