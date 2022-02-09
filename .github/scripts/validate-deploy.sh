@@ -44,7 +44,7 @@ else
 fi
 
 #wait for deployment
-sleep 8m
+sleep 5m
 
 count=0
 until kubectl rollout status deployment/t8c-operator -n "${NAMESPACE}" || [[ $count -eq 5 ]]; do

@@ -28,7 +28,8 @@ spec:
     image:
       pullPolicy: IfNotPresent
       repository: docker.io/turbonomic
-      tag: 8.4.4  
+      tag: 8.4.4
+    serviceAccountName: ${SANAME}    
   nginx:
     nginxIsPrimaryIngress: false
   openshiftingress:
