@@ -18,12 +18,10 @@ spec:
   global:
     repository: turbonomic
     tag: 8.4.4
-    externalArangoDBName: arango.turbo.svc.cluster.local
     storageClassName: ${STOR_NAME}
     serviceAccountName: ${SANAME}
   ui:
     enabled: true
-    serviceAccountName: ${SANAME}
   market:
     image:
       pullPolicy: IfNotPresent
@@ -32,6 +30,9 @@ spec:
     serviceAccountName: ${SANAME}    
   nginx:
     nginxIsPrimaryIngress: false
+    httpsRedirect: false
+  nginxingress:
+    enabled: true
   openshiftingress:
     enabled: true
 
