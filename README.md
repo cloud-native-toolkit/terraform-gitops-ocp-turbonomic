@@ -46,3 +46,10 @@ module "turbonomic" {
   storage_class_name = module.gitops_storageclass.storage_name
 }
 ```
+
+## Cleanup
+
+Note:  Some items may not be completely removed by simply uninstalling the operator and instance.  For this a cleanup script has been provided in the cleanup directory of this repository.  Obtain a login token from the OpenShift instance then run the script:
+
+`./turbo-clean.sh <turbonomic namespace>`
+
