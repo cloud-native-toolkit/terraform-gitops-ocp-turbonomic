@@ -1,7 +1,7 @@
 #  Turbonomic Gitops terraform module
 ![Verify and release module](https://github.com/cloud-native-toolkit/terraform-gitops-ocp-turbonomic/workflows/Verify%20and%20release%20module/badge.svg)
 
-Deploys Turbonomic operator into the cluster and creates an instance. By default, the kubeturbo probe is also installed into the cluster along with the OpenShift ingress.  Other probes to deploy can be specified in the probes variable, by default it will deploy:  turboprobe, openshift ingress, and instana.  The namespace to deploy within the cluster is defined in the variables, default is Turbonomic.  Also note if deploying on mzr cluster you'll need the custom storage created, default is true to create this automatically, if not mzr you can set to false and use another storage class you'd like.
+Deploys the latest Turbonomic operator into the cluster. By default, the kubeturbo probe is also installed into the cluster along with the OpenShift ingress.  Other probes to deploy can be specified in the probes variable, by default it will deploy:  turboprobe, openshift ingress, and instana.  The namespace to deploy within the cluster is defined in the variables, default is Turbonomic.  Also note if deploying on mzr cluster you'll need the custom storage created, default is true to create this automatically, if not mzr you can set to false and use another storage class you'd like.
 
 If the operator is unable to pull the image due to a docker rate limit error from your cluster, then set a docker pull secret and pass the name of the pull secret in the `pullsecret_name` variable.
 
@@ -13,6 +13,12 @@ Use these names in the `probes` variable to define additional probes as needed f
 ## Supported platforms
 
 - OCP 4.6+
+
+### General Prerequisites
+
+- OpenShift Cluster
+- ArgoCD, OpenShift Gitops, OpenShift Pipelines deployed
+- Git Repository / token with repo create/destory permission
 
 ## Module dependencies
 
@@ -30,7 +36,7 @@ modules can help provide the required information:
 
 - Gitops - github.com/cloud-native-toolkit/terraform-tools-gitops
 - Namespace - github.com/ibm-garage-cloud/terraform-cluster-namespace
-- StorageClass - github.com/cloud-native-toolkit/terraform-gitops-ocp-storageclass
+- StorageClass (for IBM Cloud installs)- github.com/cloud-native-toolkit/terraform-gitops-ocp-storageclass
 
 
 ## Example usage
@@ -46,3 +52,9 @@ module "turbonomic" {
   storage_class_name = module.gitops_storageclass.storage_name
 }
 ```
+
+## Cleanup
+
+Note:  Some items may not be completely removed by simply uninstalling the operator and instance.  For this a cleanup script has been provided in the cleanup directory of this repository.  Obtain a login token from the OpenShift instance then run the script:
+
+`./turbo-clean.sh <turbonomic namespace>`
