@@ -1,4 +1,4 @@
-#/usr/bin/env bash
+#!/usr/bin/env bash
 
 # takes one parameter the namespace where turbo is installed
 NAMESPACE="$1"
