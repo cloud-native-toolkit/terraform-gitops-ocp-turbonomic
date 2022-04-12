@@ -3,6 +3,13 @@
 # takes one parameter the namespace where turbo is installed
 NAMESPACE="$1"
 
+#checks for only 1 param
+if [ $# -eq 0 ]
+  then
+    echo "No arguments given. Please specify a namespace."
+    exit 0
+fi
+
 ##
 ## Turbonomic cleanup script to remove installed resources from gitops deployment
 ##
