@@ -7,4 +7,5 @@ module "gitops_turbo" {
   namespace = module.gitops_turbo_namespace.name
   storage_class_name = module.gitops_storageclass.storage_name
   pullsecret_name = "dockerpull"
+  probes = ["kubeturbo","ui"]
 }
