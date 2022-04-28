@@ -20,8 +20,6 @@ spec:
     tag: 8.4.4
     storageClassName: ${STOR_NAME}
     serviceAccountName: ${SANAME}
-  ui:
-    enabled: true
   market:
     image:
       pullPolicy: IfNotPresent
@@ -129,3 +127,11 @@ EOL
 EOL
     fi
 
+    if [[ "${PROBES}" =~ ui ]]; then
+      echo "adding ui probe..."
+      cat >> ${DEST_DIR}/xl-release.yaml << EOL
+  
+  ui:
+    enabled: true
+EOL
+    fi
