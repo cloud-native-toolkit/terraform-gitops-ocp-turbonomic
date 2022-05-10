@@ -5,6 +5,7 @@ Deploys the latest Turbonomic operator into the cluster. By default, the kubetur
 
 If the operator is unable to pull the image due to a docker rate limit error from your cluster, then set a docker pull secret and pass the name of the pull secret in the `pullsecret_name` variable.
 
+
 ### Supported Component Selector Probe Types 
 Use these names in the `probes` variable to define additional probes as needed for your environment:
 ```
