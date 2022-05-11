@@ -113,7 +113,7 @@ resource "null_resource" "setup_gitops" {
   depends_on = [module.setup_group_scc]
 
   provisioner "local-exec" {
-    command = "${path.module}/scripts/create-yaml.sh '${local.name}' '${local.yaml_dir}'"
+    command = "${path.module}/scripts/create-yaml.sh '${local.name}' '${local.yaml_dir}' '${var.probes}'"
 
     environment = {
       VALUES_CONTENT = yamlencode(local.values_content)
