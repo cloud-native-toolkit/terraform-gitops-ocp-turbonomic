@@ -1,4 +1,6 @@
 module "gitops_turbo" {
+  depends_on = [module.gitops_turbo_namespace,module.gitops_storageclass]
+  
   source = "./module"
 
   gitops_config = module.gitops.gitops_config

@@ -1,12 +1,21 @@
 locals {
-  name          = "turbo"
+  name          = "ocp-turbonomic"
   bin_dir       = module.setup_clis.bin_dir
-  yaml_dir      = "${path.cwd}/.tmp/${local.name}/chart/${local.name}"
-  inst_dir      = "${local.yaml_dir}/instance"
+  tmp_dir        = "${path.cwd}/.tmp/${local.name}"
+  yaml_dir       = "${local.tmp_dir}/chart/${local.name}"
 
-  layer = "services"
+  layer              = "services"
+  type               = "operators"
   application_branch = "main"
-  layer_config = var.gitops_config[local.layer]
+  layer_config       = var.gitops_config[local.layer]
+
+  # set values content for subscription
+  values_content = {
+      turbo = {
+        storagename = var.storage_class_name
+        turbo_version = var.turbo_version
+      }
+    }
 }
 
 module setup_clis {
@@ -99,55 +108,35 @@ module setup_group_scc {
   group = true
 }
 
-resource null_resource deploy_operator {
+# Add values for charts
+resource "null_resource" "setup_gitops" {
   depends_on = [module.setup_group_scc]
 
-  provisioner "local-exec" {
-    command = "${path.module}/scripts/deployOp.sh '${local.yaml_dir}' '${module.service_account.name}' '${var.namespace}'"
-    
-    environment = {
-      BIN_DIR = local.bin_dir
-    }
-  }
-}
-
-resource null_resource setup_gitops_operator {
-  depends_on = [null_resource.deploy_operator]
-
-  provisioner "local-exec" {
-    command = "${local.bin_dir}/igc gitops-module '${local.name}' -n '${var.namespace}' --contentDir '${local.yaml_dir}' --serverName '${var.server_name}' -l '${local.layer}' --debug"
-
-    environment = {
-      GIT_CREDENTIALS = yamlencode(nonsensitive(var.git_credentials))
-      GITOPS_CONFIG   = yamlencode(var.gitops_config)
-    }
-  }
-}
-
-resource "null_resource" "deploy_instance" {
-  depends_on = [null_resource.deploy_operator]
   triggers = {
     probes = join(",", var.probes)
   }
 
   provisioner "local-exec" {
-    command = "${path.module}/scripts/deployInstance.sh '${local.inst_dir}' '${module.service_account.name}' '${self.triggers.probes}' ${var.storage_class_name}"
+    command = "${path.module}/scripts/create-yaml.sh '${local.name}' '${local.yaml_dir}' '${self.triggers.probes}'"
 
     environment = {
-      BIN_DIR = local.bin_dir
-    }
-  }
-} 
-
-resource null_resource setup_gitops_instance {
-  depends_on = [null_resource.setup_gitops_operator,null_resource.deploy_instance]
-
-  provisioner "local-exec" {
-    command = "${local.bin_dir}/igc gitops-module 'turboinst' -n '${var.namespace}' --contentDir '${local.inst_dir}' --serverName '${var.server_name}' -l '${local.layer}' --debug"
-
-    environment = {
-      GIT_CREDENTIALS = yamlencode(nonsensitive(var.git_credentials))
-      GITOPS_CONFIG   = yamlencode(var.gitops_config)
+      VALUES_CONTENT = yamlencode(local.values_content)
     }
   }
 }
+
+# Deploy
+resource gitops_module turbomodule {
+  depends_on = [null_resource.setup_gitops]
+
+  name        = local.name
+  namespace   = var.namespace
+  content_dir = local.yaml_dir
+  server_name = var.server_name
+  layer       = local.layer
+  type        = local.type
+  branch      = local.application_branch
+  config      = yamlencode(var.gitops_config)
+  credentials = yamlencode(var.git_credentials)
+}
+

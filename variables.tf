@@ -96,3 +96,9 @@ variable "pullsecret_name" {
   description = "Name of the docker pull secret if needed - only needed if hitting docker rate limit"
   default     = ""
 }
+
+variable "turbo_version" {
+  type        = string
+  description = "Turbonomic instance version"
+  default     = "8.4.4"
+}

@@ -7,10 +7,10 @@ export KUBECONFIG=$(cat .kubeconfig)
 NAMESPACE=$(cat .namespace)
 BRANCH="main"
 SERVER_NAME="default"
-TYPE="base"
+TYPE="operators"
 LAYER="2-services"
 
-COMPONENT_NAME="turbo"
+COMPONENT_NAME="ocp-turbonomic"
 
 mkdir -p .testrepo
 
