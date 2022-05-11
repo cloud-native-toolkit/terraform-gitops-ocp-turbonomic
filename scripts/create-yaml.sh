@@ -18,14 +18,14 @@ if [[ -n "${VALUES_CONTENT}" ]]; then
 fi
 
 cat >> ${DEST_DIR}/values.yaml << EOL
-probes:
+"probes":
 EOL
 
 ## add in probes as needed
     if [[ "${PROBES}" =~ kubeturbo ]]; then
       echo "adding kubeturbo probe..."
       cat >> ${DEST_DIR}/values.yaml << EOL
-  name: kubeturbo
+  "name": "kubeturbo"
 EOL
     fi
 
@@ -33,7 +33,7 @@ EOL
       echo "adding instana probe..."
       cat >> ${DEST_DIR}/values.yaml << EOL
   
-  name: instana
+  "name": "instana"
 EOL
     fi
 
@@ -41,7 +41,7 @@ EOL
       echo "adding aws probe..."
       cat >> ${DEST_DIR}/values.yaml << EOL
   
-  name: aws
+  "name": "aws"
 EOL
     fi
 
@@ -49,7 +49,7 @@ EOL
       echo "adding azure probe..."
       cat >> ${DEST_DIR}/values.yaml << EOL
   
-  name: azure
+  "name": "azure"
 EOL
     fi
 
@@ -57,7 +57,7 @@ EOL
       echo "adding prometheus probe..."
       cat >> ${DEST_DIR}/values.yaml << EOL
   
-  name: prometheus
+  "name": "prometheus"
 EOL
     fi
 
@@ -65,7 +65,7 @@ EOL
       echo "adding servicenow probe..."
       cat >> ${DEST_DIR}/values.yaml << EOL
   
-  name: servicenow
+  "name": "servicenow"
 EOL
     fi
 
@@ -73,7 +73,7 @@ EOL
       echo "adding tomcat probe..."
       cat >> ${DEST_DIR}/values.yaml << EOL
   
-  name: tomcat
+  "name": "tomcat"
 EOL
     fi
 
@@ -81,7 +81,7 @@ EOL
       echo "adding jvm probe..."
       cat >> ${DEST_DIR}/values.yaml << EOL
   
-  name: jvm
+  "name": "jvm"
 EOL
     fi
 
@@ -89,7 +89,7 @@ EOL
       echo "adding websphere probe..."
       cat >> ${DEST_DIR}/values.yaml << EOL
   
-  name: websphere
+  "name": "websphere"
 EOL
     fi
 
@@ -97,7 +97,7 @@ EOL
       echo "adding weblogic probe..."
       cat >> ${DEST_DIR}/values.yaml << EOL
   
-  name: weblogic
+  "name": "weblogic"
 EOL
     fi
 
@@ -105,6 +105,6 @@ EOL
       echo "adding ui probe..."
       cat >> ${DEST_DIR}/values.yaml << EOL
   
-  name: ui
+  "name": "ui"
 EOL
     fi
