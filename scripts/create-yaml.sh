@@ -32,63 +32,63 @@ EOL
     if [[ "${PROBES}" =~ instana ]]; then
       echo "adding instana probe..."
       cat >> ${DEST_DIR}/values.yaml << EOL
-  "name": "instana"
+  - instana
 EOL
     fi
 
     if [[ "${PROBES}" =~ aws ]]; then
       echo "adding aws probe..."
       cat >> ${DEST_DIR}/values.yaml << EOL
-  "name": "aws"
+  - aws
 EOL
     fi
 
     if [[ "${PROBES}" =~ azure ]]; then
       echo "adding azure probe..."
       cat >> ${DEST_DIR}/values.yaml << EOL
-  "name": "azure"
+  - azure
 EOL
     fi
 
     if [[ "${PROBES}" =~ prometheus ]]; then
       echo "adding prometheus probe..."
       cat >> ${DEST_DIR}/values.yaml << EOL
-  "name": "prometheus"
+  - prometheus
 EOL
     fi
 
     if [[ "${PROBES}" =~ servicenow ]]; then
       echo "adding servicenow probe..."
       cat >> ${DEST_DIR}/values.yaml << EOL
-  "name": "servicenow"
+  - servicenow
 EOL
     fi
 
     if [[ "${PROBES}" =~ tomcat ]]; then
       echo "adding tomcat probe..."
       cat >> ${DEST_DIR}/values.yaml << EOL
-  "name": "tomcat"
+  - tomcat
 EOL
     fi
 
     if [[ "${PROBES}" =~ jvm ]]; then
       echo "adding jvm probe..."
       cat >> ${DEST_DIR}/values.yaml << EOL
-  "name": "jvm"
+  - jvm
 EOL
     fi
 
     if [[ "${PROBES}" =~ websphere ]]; then
       echo "adding websphere probe..."
       cat >> ${DEST_DIR}/values.yaml << EOL
-  "name": "websphere"
+  - websphere
 EOL
     fi
 
     if [[ "${PROBES}" =~ weblogic ]]; then
       echo "adding weblogic probe..."
       cat >> ${DEST_DIR}/values.yaml << EOL
-  "name": "weblogic"
+  - weblogic
 EOL
     fi
 
