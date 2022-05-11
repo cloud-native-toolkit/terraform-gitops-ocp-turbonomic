@@ -112,8 +112,12 @@ module setup_group_scc {
 resource "null_resource" "setup_gitops" {
   depends_on = [module.setup_group_scc]
 
+  triggers = {
+    probes = join(",", var.probes)
+  }
+
   provisioner "local-exec" {
-    command = "${path.module}/scripts/create-yaml.sh '${local.name}' '${local.yaml_dir}' '${var.probes}'"
+    command = "${path.module}/scripts/create-yaml.sh '${local.name}' '${local.yaml_dir}' '${self.triggers.probes}'"
 
     environment = {
       VALUES_CONTENT = yamlencode(local.values_content)
