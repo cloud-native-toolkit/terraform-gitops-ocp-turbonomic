@@ -18,21 +18,20 @@ if [[ -n "${VALUES_CONTENT}" ]]; then
 fi
 
 cat >> ${DEST_DIR}/values.yaml << EOL
-"probes":
+probes:
 EOL
 
 ## add in probes as needed
     if [[ "${PROBES}" =~ kubeturbo ]]; then
       echo "adding kubeturbo probe..."
       cat >> ${DEST_DIR}/values.yaml << EOL
-  "name": "kubeturbo"
+  - kubeturbo
 EOL
     fi
 
     if [[ "${PROBES}" =~ instana ]]; then
       echo "adding instana probe..."
       cat >> ${DEST_DIR}/values.yaml << EOL
-  
   "name": "instana"
 EOL
     fi
@@ -40,7 +39,6 @@ EOL
     if [[ "${PROBES}" =~ aws ]]; then
       echo "adding aws probe..."
       cat >> ${DEST_DIR}/values.yaml << EOL
-  
   "name": "aws"
 EOL
     fi
@@ -48,7 +46,6 @@ EOL
     if [[ "${PROBES}" =~ azure ]]; then
       echo "adding azure probe..."
       cat >> ${DEST_DIR}/values.yaml << EOL
-  
   "name": "azure"
 EOL
     fi
@@ -56,7 +53,6 @@ EOL
     if [[ "${PROBES}" =~ prometheus ]]; then
       echo "adding prometheus probe..."
       cat >> ${DEST_DIR}/values.yaml << EOL
-  
   "name": "prometheus"
 EOL
     fi
@@ -64,7 +60,6 @@ EOL
     if [[ "${PROBES}" =~ servicenow ]]; then
       echo "adding servicenow probe..."
       cat >> ${DEST_DIR}/values.yaml << EOL
-  
   "name": "servicenow"
 EOL
     fi
@@ -72,7 +67,6 @@ EOL
     if [[ "${PROBES}" =~ tomcat ]]; then
       echo "adding tomcat probe..."
       cat >> ${DEST_DIR}/values.yaml << EOL
-  
   "name": "tomcat"
 EOL
     fi
@@ -80,7 +74,6 @@ EOL
     if [[ "${PROBES}" =~ jvm ]]; then
       echo "adding jvm probe..."
       cat >> ${DEST_DIR}/values.yaml << EOL
-  
   "name": "jvm"
 EOL
     fi
@@ -88,7 +81,6 @@ EOL
     if [[ "${PROBES}" =~ websphere ]]; then
       echo "adding websphere probe..."
       cat >> ${DEST_DIR}/values.yaml << EOL
-  
   "name": "websphere"
 EOL
     fi
@@ -96,7 +88,6 @@ EOL
     if [[ "${PROBES}" =~ weblogic ]]; then
       echo "adding weblogic probe..."
       cat >> ${DEST_DIR}/values.yaml << EOL
-  
   "name": "weblogic"
 EOL
     fi
@@ -104,7 +95,6 @@ EOL
     if [[ "${PROBES}" =~ ui ]]; then
       echo "adding ui probe..."
       cat >> ${DEST_DIR}/values.yaml << EOL
-  
-  "name": "ui"
+  - ui
 EOL
     fi
