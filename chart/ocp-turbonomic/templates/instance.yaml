@@ -9,14 +9,14 @@ metadata:
 spec:
   global:
     repository: turbonomic
-    tag: {{ .Values.turbo.version }}
+    tag: {{ .Values.turbo.turbo_version }}
     storageClassName: {{ .Values.turbo.storagename }}
     serviceAccountName: t8c-operator
   market:
     image:
       pullPolicy: IfNotPresent
       repository: docker.io/turbonomic
-      tag: {{ .Values.turbo.version }}
+      tag: {{ .Values.turbo.turbo_version }}
     serviceAccountName: t8c-operator    
   nginx:
     nginxIsPrimaryIngress: false

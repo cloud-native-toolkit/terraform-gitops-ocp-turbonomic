@@ -97,7 +97,7 @@ variable "pullsecret_name" {
   default     = ""
 }
 
-variable "version" {
+variable "turbo_version" {
   type        = string
   description = "Turbonomic instance version"
   default     = "8.4.4"

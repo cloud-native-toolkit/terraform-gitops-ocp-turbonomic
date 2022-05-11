@@ -13,7 +13,7 @@ locals {
   values_content = {
       turbo = {
         storagename = var.storage_class_name
-        version = var.version
+        turbo_version = var.turbo_version
       }
     }
 }
