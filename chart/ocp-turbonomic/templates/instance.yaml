@@ -1,0 +1,27 @@
+apiVersion: charts.helm.k8s.io/v1
+kind: Xl
+metadata:
+  name: xl-release
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+  labels:
+    {{- include "ocp-turbonomic.labels" . | nindent 4 }}      
+spec:
+  global:
+    repository: turbonomic
+    tag: {{ .Values.turbo.version }}
+    storageClassName: {{ .Values.turbo.storagename }}
+    serviceAccountName: t8c-operator
+  market:
+    image:
+      pullPolicy: IfNotPresent
+      repository: docker.io/turbonomic
+      tag: {{ .Values.turbo.version }}
+    serviceAccountName: t8c-operator    
+  nginx:
+    nginxIsPrimaryIngress: false
+    httpsRedirect: false
+  nginxingress:
+    enabled: true
+  openshiftingress:
+    enabled: true
