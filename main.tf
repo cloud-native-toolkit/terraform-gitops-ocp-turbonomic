@@ -1,6 +1,6 @@
 locals {
   name          = "turboinst"
-  type          = "instance"
+  type          = "instances"
   bin_dir       = module.setup_clis.bin_dir
   yaml_dir      = "${path.cwd}/.tmp/${local.name}/chart/${local.name}"
   inst_dir      = "${local.yaml_dir}/instance"
@@ -120,7 +120,7 @@ resource gitops_module operator {
   content_dir = local.yaml_dir
   server_name = var.server_name
   layer = local.layer
-  type = "operator"
+  type = "operators"
   branch = local.application_branch
   config = yamlencode(var.gitops_config)
   credentials = yamlencode(var.git_credentials)
