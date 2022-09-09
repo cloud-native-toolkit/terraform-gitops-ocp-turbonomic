@@ -40,8 +40,11 @@ find . -name "*"
 set -e
 
 validate_gitops_content "${NAMESPACE}" "${LAYER}" "${SERVER_NAME}" "${TYPE}" "${COMPONENT_NAME}" "xl-release.yaml"
+
 check_k8s_namespace "${NAMESPACE}"
-check_k8s_resource "${NAMESPACE}" daemonset "${COMPONENT_NAME}"
+
+check_k8s_resource "${NAMESPACE}" deployment "tcs-operator"
+check_k8s_resource "${NAMESPACE}" xl "xl-release"
 
 cd ..
 rm -rf .testrepo
