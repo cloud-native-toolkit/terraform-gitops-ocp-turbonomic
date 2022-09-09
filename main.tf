@@ -4,8 +4,8 @@ locals {
   yaml_dir      = "${path.cwd}/.tmp/${local.name}/chart/${local.name}"
   inst_dir      = "${local.yaml_dir}/instance"
 
-  type          = "instance"
-  layer         = "service"
+  type          = "instances"
+  layer         = "services"
   application_branch = "main"
   layer_config = var.gitops_config[local.layer]
 }
