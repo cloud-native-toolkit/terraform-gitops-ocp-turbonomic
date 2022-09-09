@@ -1,16 +1,33 @@
 #!/usr/bin/env bash
 
+SCRIPT_DIR=$(cd $(dirname "$0"); pwd -P)
+
 GIT_REPO=$(cat git_repo)
 GIT_TOKEN=$(cat git_token)
 
+BIN_DIR=$(cat .bin_dir)
+
+export PATH="${BIN_DIR}:${PATH}"
+
+source "${SCRIPT_DIR}/validation-functions.sh"
+
+if ! command -v oc 1> /dev/null 2> /dev/null; then
+  echo "oc cli not found" >&2
+  exit 1
+fi
+
+if ! command -v kubectl 1> /dev/null 2> /dev/null; then
+  echo "kubectl cli not found" >&2
+  exit 1
+fi
+
 export KUBECONFIG=$(cat .kubeconfig)
 NAMESPACE=$(cat .namespace)
-BRANCH="main"
-SERVER_NAME="default"
-TYPE="base"
-LAYER="2-services"
-
-COMPONENT_NAME="turbo"
+COMPONENT_NAME=$(jq -r '.name // "my-module"' gitops-output.json)
+BRANCH=$(jq -r '.branch // "main"' gitops-output.json)
+SERVER_NAME=$(jq -r '.server_name // "default"' gitops-output.json)
+LAYER=$(jq -r '.layer_dir // "2-services"' gitops-output.json)
+TYPE=$(jq -r '.type // "base"' gitops-output.json)
 
 mkdir -p .testrepo
 
@@ -20,44 +37,15 @@ cd .testrepo || exit 1
 
 find . -name "*"
 
-if [[ ! -f "argocd/${LAYER}/cluster/${SERVER_NAME}/${TYPE}/${NAMESPACE}-${COMPONENT_NAME}.yaml" ]]; then
-  echo "ArgoCD config missing - argocd/${LAYER}/cluster/${SERVER_NAME}/${TYPE}/${NAMESPACE}-${COMPONENT_NAME}.yaml"
-  exit 1
-fi
+set -e
 
-echo "Printing argocd/${LAYER}/cluster/${SERVER_NAME}/${TYPE}/${NAMESPACE}-${COMPONENT_NAME}.yaml"
-cat "argocd/${LAYER}/cluster/${SERVER_NAME}/${TYPE}/${NAMESPACE}-${COMPONENT_NAME}.yaml"
+validate_gitops_content "${NAMESPACE}" "${LAYER}" "${SERVER_NAME}" "operators" "turbo" "operator.yaml"
+validate_gitops_content "${NAMESPACE}" "${LAYER}" "${SERVER_NAME}" "${TYPE}" "${COMPONENT_NAME}" "xl-release.yaml"
 
-count=0
-until kubectl get namespace "${NAMESPACE}" 1> /dev/null 2> /dev/null || [[ $count -eq 30 ]]; do
-  echo "Waiting for namespace: ${NAMESPACE}"
-  count=$((count + 1))
-  sleep 15
-done
+check_k8s_namespace "${NAMESPACE}"
 
-if [[ $count -eq 30 ]]; then
-  echo "Timed out waiting for namespace: ${NAMESPACE}"
-  exit 1
-else
-  echo "Found namespace: ${NAMESPACE}. Sleeping for 30 seconds to wait for everything to settle down"
-  sleep 30
-fi
-
-#wait for deployment
-sleep 5m
-
-count=0
-until kubectl rollout status deployment/t8c-operator -n "${NAMESPACE}" || [[ $count -eq 5 ]]; do
-  echo "Waiting for turbo operator rollout to deploy"
-  count=$((count + 1))
-  sleep 60
-done
-
-if [[ $count -eq 5 ]]; then
-  echo "Timed out waiting for turbo operator to deploy"
-  exit 1
-fi
-
+check_k8s_resource "${NAMESPACE}" deployment "t8c-operator"
+check_k8s_resource "${NAMESPACE}" xl "xl-release"
 
 cd ..
 rm -rf .testrepo
