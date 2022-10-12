@@ -8,6 +8,7 @@ locals {
   layer         = "services"
   application_branch = "main"
   layer_config = var.gitops_config[local.layer]
+  service_account_name = "t8c-operator"
 }
 
 module setup_clis {
@@ -20,7 +21,7 @@ module "service_account" {
   gitops_config = var.gitops_config
   git_credentials = var.git_credentials
   namespace = var.namespace
-  name = "t8c-operator"
+  name = local.service_account_name
   pull_secrets = var.pullsecret_name != null && var.pullsecret_name != "" ? [var.pullsecret_name] : []
   rbac_rules = [{
     apiGroups = [""]
@@ -104,7 +105,7 @@ resource null_resource deploy_operator {
   depends_on = [module.setup_group_scc]
 
   provisioner "local-exec" {
-    command = "${path.module}/scripts/deployOp.sh '${local.yaml_dir}' '${module.service_account.name}' '${var.namespace}'"
+    command = "${path.module}/scripts/deployOp.sh '${local.yaml_dir}' '${local.service_account_name}' '${var.namespace}'"
     
     environment = {
       BIN_DIR = local.bin_dir
@@ -133,7 +134,7 @@ resource "null_resource" "deploy_instance" {
   }
 
   provisioner "local-exec" {
-    command = "${path.module}/scripts/deployInstance.sh '${local.inst_dir}' '${module.service_account.name}' '${self.triggers.probes}' ${var.storage_class_name}"
+    command = "${path.module}/scripts/deployInstance.sh '${local.inst_dir}' '${local.service_account_name}' '${self.triggers.probes}' ${var.storage_class_name}"
 
     environment = {
       BIN_DIR = local.bin_dir
