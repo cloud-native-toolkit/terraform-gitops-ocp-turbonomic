@@ -27,73 +27,73 @@ resource gitops_service_account sa {
   all_service_accounts = true
 
   rules {
-    apiGroups = [""]
+    api_groups = [""]
     resources = ["configmaps","endpoints","events","persistentvolumeclaims","pods","secrets","serviceaccounts","services"]
     verbs = ["*"]
   }
   rules {
-    apiGroups = ["apps"]
+    api_groups = ["apps"]
     resources = ["daemonsets","deployments","statefulsets","replicasets"]
     verbs = ["*"]
   }
   rules {
-    apiGroups = ["apps"]
+    api_groups = ["apps"]
     resources = ["deployments/finalizers"]
     verbs = ["update"]
   }
   rules {
-    apiGroups = ["extensions"]
+    api_groups = ["extensions"]
     resources = ["deployments"]
     verbs = ["*"]
   }
   rules {
-    apiGroups = [""]
+    api_groups = [""]
     resources = ["namespaces"]
     verbs = ["get"]
   }
   rules {
-    apiGroups = ["policy"]
+    api_groups = ["policy"]
     resources = ["podsecuritypolicies","poddisruptionbudgets"]
     verbs = ["*"]
   }
   rules {
-    apiGroups = ["rbac.authorization.k8s.io"]
+    api_groups = ["rbac.authorization.k8s.io"]
     resources = ["clusterrolebindings","clusterroles","rolebindings","roles"]
     verbs = ["*"]
   }
   rules {
-    apiGroups = ["batch"]
+    api_groups = ["batch"]
     resources = ["jobs"]
     verbs = ["*"]
   }
   rules {
-    apiGroups = ["monitoring.coreos.com"]
+    api_groups = ["monitoring.coreos.com"]
     resources = ["servicemonitors"]
     verbs = ["get","create"]
   }
   rules {
-    apiGroups = ["charts.helm.k8s.io"]
+    api_groups = ["charts.helm.k8s.io"]
     resources = ["*"]
     verbs = ["*"]
   }
   rules {
-    apiGroups = ["networking.istio.io"]
+    api_groups = ["networking.istio.io"]
     resources = ["gateways","virtualservices"]
     verbs = ["*"]
   }
   rules {
-    apiGroups = ["cert-manager.io"]
+    api_groups = ["cert-manager.io"]
     resources = ["certificates"]
     verbs = ["*"]
   }
   rules {
-    apiGroups = ["route.openshift.io"]
+    api_groups = ["route.openshift.io"]
     resources = ["routes","routes/custom-host"]
     verbs = ["*"]
   }
   rules {
-    apiGroups = ["security.openshift.io"]
-    resourceNames = ["turbonomic-t8c-operator-anyuid","turbonomic-t8c-operator-privileged"]
+    api_groups = ["security.openshift.io"]
+    resource_names = ["turbonomic-t8c-operator-anyuid","turbonomic-t8c-operator-privileged"]
     resources = ["securitycontextconstraints"]
     verbs = ["use"]
   }
