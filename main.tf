@@ -109,7 +109,7 @@ resource gitops_module operator {
   depends_on = [null_resource.deploy_operator]
 
   name = "turbo"
-  namespace = var.namespace
+  namespace = gitops_service_account.sa.namespace
   content_dir = local.yaml_dir
   server_name = var.server_name
   layer = local.layer
@@ -134,7 +134,7 @@ resource gitops_module module {
   depends_on = [null_resource.deploy_instance]
 
   name = local.name
-  namespace = var.namespace
+  namespace = gitops_service_account.sa.namespace
   content_dir = local.inst_dir
   server_name = var.server_name
   layer = local.layer

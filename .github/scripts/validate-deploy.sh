@@ -48,7 +48,8 @@ check_k8s_resource "${NAMESPACE}" serviceaccount "t8c-operator"
 check_k8s_resource "${NAMESPACE}" deployment "t8c-operator"
 check_k8s_resource "${NAMESPACE}" xl "xl-release"
 
-sleep 120
+echo "Sleeping for 10 minutes..."
+sleep 600
 
 kubectl get deployment -n "${NAMESPACE}"
 
