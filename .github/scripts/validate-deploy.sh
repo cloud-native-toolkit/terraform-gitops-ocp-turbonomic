@@ -44,8 +44,13 @@ validate_gitops_content "${NAMESPACE}" "${LAYER}" "${SERVER_NAME}" "${TYPE}" "${
 
 check_k8s_namespace "${NAMESPACE}"
 
+check_k8s_resource "${NAMESPACE}" serviceaccount "t8c-operator"
 check_k8s_resource "${NAMESPACE}" deployment "t8c-operator"
 check_k8s_resource "${NAMESPACE}" xl "xl-release"
+
+sleep 60
+
+kubectl get deployment -n "${NAMESPACE}"
 
 cd ..
 rm -rf .testrepo
