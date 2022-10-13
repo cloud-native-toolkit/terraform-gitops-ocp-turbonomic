@@ -1,6 +1,5 @@
 locals {
   name          = "turboinst"
-  bin_dir       = module.setup_clis.bin_dir
   yaml_dir      = "${path.cwd}/.tmp/${local.name}/chart/${local.name}"
   inst_dir      = "${local.yaml_dir}/instance"
 
@@ -11,105 +10,98 @@ locals {
   service_account_name = "t8c-operator"
 }
 
-module setup_clis {
-  source = "github.com/cloud-native-toolkit/terraform-util-clis.git?ref=v1.16.9"
-}
+resource gitops_service_account sa {
+  name          = local.service_account_name
+  namespace     = var.namespace
+  server_name   = var.server_name
+  branch        = local.application_branch
+  config        = yamlencode(var.gitops_config)
+  credentials   = yamlencode(var.git_credentials)
 
-module "service_account" {
-  source = "github.com/cloud-native-toolkit/terraform-gitops-service-account?ref=v1.9.0"
+  service_account_name = local.service_account_name
 
-  gitops_config = var.gitops_config
-  git_credentials = var.git_credentials
-  namespace = var.namespace
-  name = local.service_account_name
-  pull_secrets = var.pullsecret_name != null && var.pullsecret_name != "" ? [var.pullsecret_name] : []
-  rbac_rules = [{
+  cluster_scope = true
+  sccs          = ["anyuid","privileged"]
+  pull_secrets  = var.pullsecret_name != null && var.pullsecret_name != "" ? [var.pullsecret_name] : []
+
+  all_service_accounts = true
+
+  rules {
     apiGroups = [""]
     resources = ["configmaps","endpoints","events","persistentvolumeclaims","pods","secrets","serviceaccounts","services"]
     verbs = ["*"]
-  },{
+  }
+  rules {
     apiGroups = ["apps"]
     resources = ["daemonsets","deployments","statefulsets","replicasets"]
     verbs = ["*"]
-  },{
+  }
+  rules {
     apiGroups = ["apps"]
     resources = ["deployments/finalizers"]
     verbs = ["update"]
-  },{
+  }
+  rules {
     apiGroups = ["extensions"]
     resources = ["deployments"]
     verbs = ["*"]
-  },{
+  }
+  rules {
     apiGroups = [""]
     resources = ["namespaces"]
     verbs = ["get"]
-  },{
+  }
+  rules {
     apiGroups = ["policy"]
     resources = ["podsecuritypolicies","poddisruptionbudgets"]
     verbs = ["*"]
-  },{
+  }
+  rules {
     apiGroups = ["rbac.authorization.k8s.io"]
     resources = ["clusterrolebindings","clusterroles","rolebindings","roles"]
     verbs = ["*"]
-  },{
+  }
+  rules {
     apiGroups = ["batch"]
     resources = ["jobs"]
     verbs = ["*"]
-  },{
+  }
+  rules {
     apiGroups = ["monitoring.coreos.com"]
     resources = ["servicemonitors"]
     verbs = ["get","create"]
-  },{
+  }
+  rules {
     apiGroups = ["charts.helm.k8s.io"]
     resources = ["*"]
     verbs = ["*"]
-  },{
+  }
+  rules {
     apiGroups = ["networking.istio.io"]
     resources = ["gateways","virtualservices"]
     verbs = ["*"]
-  },{
+  }
+  rules {
     apiGroups = ["cert-manager.io"]
     resources = ["certificates"]
     verbs = ["*"]
-  },{
+  }
+  rules {
     apiGroups = ["route.openshift.io"]
     resources = ["routes","routes/custom-host"]
     verbs = ["*"]
-  },{
+  }
+  rules {
     apiGroups = ["security.openshift.io"]
     resourceNames = ["turbonomic-t8c-operator-anyuid","turbonomic-t8c-operator-privileged"]
     resources = ["securitycontextconstraints"]
     verbs = ["use"]
   }
-  ]
-  sccs = ["anyuid","privileged"]
-  server_name = var.server_name
-  rbac_cluster_scope = true
-}
-
-module setup_group_scc {
-  depends_on = [module.service_account]
-
-  source = "github.com/cloud-native-toolkit/terraform-gitops-sccs.git?ref=v1.4.1"
-
-  gitops_config = var.gitops_config
-  git_credentials = var.git_credentials
-  namespace = var.namespace
-  service_account = ""
-  sccs = ["anyuid"]
-  server_name = var.server_name
-  group = true
 }
 
 resource null_resource deploy_operator {
-  depends_on = [module.setup_group_scc]
-
   provisioner "local-exec" {
-    command = "${path.module}/scripts/deployOp.sh '${local.yaml_dir}' '${local.service_account_name}' '${var.namespace}'"
-    
-    environment = {
-      BIN_DIR = local.bin_dir
-    }
+    command = "${path.module}/scripts/deployOp.sh '${local.yaml_dir}' '${gitops_service_account.sa.service_account_name}' '${gitops_service_account.sa.namespace}'"
   }
 }
 
@@ -134,11 +126,7 @@ resource "null_resource" "deploy_instance" {
   }
 
   provisioner "local-exec" {
-    command = "${path.module}/scripts/deployInstance.sh '${local.inst_dir}' '${local.service_account_name}' '${self.triggers.probes}' ${var.storage_class_name}"
-
-    environment = {
-      BIN_DIR = local.bin_dir
-    }
+    command = "${path.module}/scripts/deployInstance.sh '${local.inst_dir}' '${gitops_service_account.sa.service_account_name}' '${self.triggers.probes}' ${var.storage_class_name}"
   }
 }
 
