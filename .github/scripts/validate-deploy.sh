@@ -48,10 +48,25 @@ check_k8s_resource "${NAMESPACE}" serviceaccount "t8c-operator"
 check_k8s_resource "${NAMESPACE}" deployment "t8c-operator"
 check_k8s_resource "${NAMESPACE}" xl "xl-release"
 
-echo "Sleeping for 10 minutes..."
-sleep 600
-
-kubectl get deployment -n "${NAMESPACE}"
+check_k8s_resource "${NAMESPACE}" deployment action-orchestrator
+check_k8s_resource "${NAMESPACE}" deployment api
+check_k8s_resource "${NAMESPACE}" deployment auth
+check_k8s_resource "${NAMESPACE}" deployment clustermgr
+check_k8s_resource "${NAMESPACE}" deployment consul
+check_k8s_resource "${NAMESPACE}" deployment cost
+check_k8s_resource "${NAMESPACE}" deployment db
+check_k8s_resource "${NAMESPACE}" deployment group
+check_k8s_resource "${NAMESPACE}" deployment history
+check_k8s_resource "${NAMESPACE}" deployment kafka
+check_k8s_resource "${NAMESPACE}" deployment kubeturbo
+check_k8s_resource "${NAMESPACE}" deployment market
+check_k8s_resource "${NAMESPACE}" deployment nginx
+check_k8s_resource "${NAMESPACE}" deployment plan-orchestrator
+check_k8s_resource "${NAMESPACE}" deployment repository
+check_k8s_resource "${NAMESPACE}" deployment rsyslog
+check_k8s_resource "${NAMESPACE}" deployment topology-processor
+check_k8s_resource "${NAMESPACE}" deployment ui
+check_k8s_resource "${NAMESPACE}" deployment zookeeper
 
 cd ..
 rm -rf .testrepo
