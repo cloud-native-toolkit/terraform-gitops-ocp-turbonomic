@@ -17,14 +17,14 @@ metadata:
 spec:
   global:
     repository: turbonomic
-    tag: 8.4.4
+    tag: 8.6.5
     storageClassName: ${STOR_NAME}
     serviceAccountName: ${SANAME}
   market:
     image:
       pullPolicy: IfNotPresent
-      repository: docker.io/turbonomic
-      tag: 8.4.4
+      repository: registry.connect.redhat.com/turbonomic
+      tag: 8.6.5
     serviceAccountName: ${SANAME}    
   nginx:
     nginxIsPrimaryIngress: false
